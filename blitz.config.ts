@@ -1,9 +1,9 @@
-import { BlitzConfig, sessionMiddleware, simpleRolesIsAuthorized } from "blitz"
+import { BlitzConfig, sessionMiddleware, simpleRolesIsAuthorized } from 'blitz';
 
 const config: BlitzConfig = {
   middleware: [
     sessionMiddleware({
-      cookiePrefix: "flashcards",
+      cookiePrefix: 'flashcards',
       isAuthorized: simpleRolesIsAuthorized,
     }),
   ],
@@ -15,5 +15,5 @@ const config: BlitzConfig = {
     return config
   },
   */
-}
-module.exports = config
+};
+module.exports = config;
