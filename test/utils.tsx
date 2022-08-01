@@ -1,6 +1,7 @@
 import { RouterContext, BlitzRouter, BlitzProvider } from 'blitz';
 import { render as defaultRender } from '@testing-library/react';
 import { renderHook as defaultRenderHook } from '@testing-library/react-hooks';
+import React, { Children } from 'react';
 
 export * from '@testing-library/react';
 
@@ -30,13 +31,16 @@ export function render(
 ) {
   if (!wrapper) {
     // Add a default context wrapper if one isn't supplied from the test
-    wrapper = ({ children }: { children: React.ReactNode }) => (
+    const newWrapper: React.FC<{ children?: React.ReactNode }> = ({
+      children,
+    }) => (
       <BlitzProvider dehydratedState={dehydratedState}>
         <RouterContext.Provider value={{ ...mockRouter, ...router }}>
           {children}
         </RouterContext.Provider>
       </BlitzProvider>
     );
+    wrapper = newWrapper;
   }
   return defaultRender(ui, { wrapper, ...options });
 }
@@ -58,13 +62,16 @@ export function renderHook(
 ) {
   if (!wrapper) {
     // Add a default context wrapper if one isn't supplied from the test
-    wrapper = ({ children }) => (
+    const newWrapper: React.FC<{ children?: React.ReactNode }> = ({
+      children,
+    }) => (
       <BlitzProvider dehydratedState={dehydratedState}>
         <RouterContext.Provider value={{ ...mockRouter, ...router }}>
           {children}
         </RouterContext.Provider>
       </BlitzProvider>
     );
+    wrapper = newWrapper;
   }
   return defaultRenderHook(hook, { wrapper, ...options });
 }
@@ -95,14 +102,16 @@ export const mockRouter: BlitzRouter = {
 
 type DefaultParams = Parameters<typeof defaultRender>;
 type RenderUI = DefaultParams[0];
-type RenderOptions = DefaultParams[1] & {
+type RenderOptions = Omit<DefaultParams[1], 'wrapper'> & {
   router?: Partial<BlitzRouter>;
   dehydratedState?: unknown;
+  wrapper?: React.ComponentType<{ children?: React.ReactNode }>;
 };
 
 type DefaultHookParams = Parameters<typeof defaultRenderHook>;
 type RenderHook = DefaultHookParams[0];
-type RenderHookOptions = DefaultHookParams[1] & {
+type RenderHookOptions = Omit<DefaultHookParams[1], 'wrapper'> & {
   router?: Partial<BlitzRouter>;
   dehydratedState?: unknown;
+  wrapper?: React.ComponentType<{ children?: React.ReactNode }>;
 };
