@@ -10,9 +10,33 @@ import {
 import LoginForm from 'app/auth/components/LoginForm';
 
 import 'app/core/styles/index.css';
+import React from 'react';
 
-export default function App({ Component, pageProps }: AppProps) {
-  const getLayout = Component.getLayout || (page => page);
+const RootErrorFallback: React.FC<ErrorFallbackProps> = ({
+  error,
+  resetErrorBoundary,
+}) => {
+  if (error instanceof AuthenticationError) {
+    return <LoginForm onSuccess={resetErrorBoundary} />;
+  }
+  if (error instanceof AuthorizationError) {
+    return (
+      <ErrorComponent
+        statusCode={error.statusCode}
+        title="Sorry, you are not authorized to access this"
+      />
+    );
+  }
+  return (
+    <ErrorComponent
+      statusCode={error.statusCode || 400}
+      title={error.message || error.name}
+    />
+  );
+};
+
+const App: React.FC<AppProps> = ({ Component, pageProps }) => {
+  const getLayout = Component.getLayout || ((page): JSX.Element => page);
 
   return (
     <ErrorBoundary
@@ -22,24 +46,6 @@ export default function App({ Component, pageProps }: AppProps) {
       {getLayout(<Component {...pageProps} />)}
     </ErrorBoundary>
   );
-}
+};
 
-function RootErrorFallback({ error, resetErrorBoundary }: ErrorFallbackProps) {
-  if (error instanceof AuthenticationError) {
-    return <LoginForm onSuccess={resetErrorBoundary} />;
-  } else if (error instanceof AuthorizationError) {
-    return (
-      <ErrorComponent
-        statusCode={error.statusCode}
-        title="Sorry, you are not authorized to access this"
-      />
-    );
-  } else {
-    return (
-      <ErrorComponent
-        statusCode={error.statusCode || 400}
-        title={error.message || error.name}
-      />
-    );
-  }
-}
+export default App;

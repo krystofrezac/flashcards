@@ -1,9 +1,10 @@
 import { BlitzPage, useRouterQuery, Link, useMutation, Routes } from 'blitz';
-import Layout from 'app/core/layouts/Layout';
+import DefaultLayout from 'app/core/layouts/Default';
 import { LabeledTextField } from 'app/core/components/LabeledTextField';
 import { Form, FORM_ERROR } from 'app/core/components/Form';
 import { ResetPassword } from 'app/auth/validations';
 import resetPassword from 'app/auth/mutations/resetPassword';
+import React from 'react';
 
 const ResetPasswordPage: BlitzPage = () => {
   const query = useRouterQuery();
@@ -29,7 +30,9 @@ const ResetPasswordPage: BlitzPage = () => {
             passwordConfirmation: '',
             token: query.token as string,
           }}
-          onSubmit={async values => {
+          onSubmit={async (
+            values,
+          ): Promise<{ [FORM_ERROR]: string } | void> => {
             try {
               await resetPasswordMutation(values);
             } catch (error: any) {
@@ -37,12 +40,11 @@ const ResetPasswordPage: BlitzPage = () => {
                 return {
                   [FORM_ERROR]: error.message,
                 };
-              } else {
-                return {
-                  [FORM_ERROR]:
-                    'Sorry, we had an unexpected error. Please try again.',
-                };
               }
+              return {
+                [FORM_ERROR]:
+                  'Sorry, we had an unexpected error. Please try again.',
+              };
             }
           }}
         >
@@ -63,8 +65,8 @@ const ResetPasswordPage: BlitzPage = () => {
 };
 
 ResetPasswordPage.redirectAuthenticatedTo = '/';
-ResetPasswordPage.getLayout = page => (
-  <Layout title="Reset Your Password">{page}</Layout>
+ResetPasswordPage.getLayout = (page): React.ReactElement => (
+  <DefaultLayout title="Reset Your Password">{page}</DefaultLayout>
 );
 
 export default ResetPasswordPage;

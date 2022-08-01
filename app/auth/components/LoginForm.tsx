@@ -9,12 +9,13 @@ import { LabeledTextField } from 'app/core/components/LabeledTextField';
 import { Form, FORM_ERROR } from 'app/core/components/Form';
 import login from 'app/auth/mutations/login';
 import { Login } from 'app/auth/validations';
+import React from 'react';
 
 type LoginFormProps = {
   onSuccess?: (user: PromiseReturnType<typeof login>) => void;
 };
 
-export const LoginForm = (props: LoginFormProps) => {
+const LoginForm: React.FC<LoginFormProps> = props => {
   const [loginMutation] = useMutation(login);
 
   return (
@@ -25,20 +26,17 @@ export const LoginForm = (props: LoginFormProps) => {
         submitText="Login"
         schema={Login}
         initialValues={{ email: '', password: '' }}
-        onSubmit={async values => {
+        onSubmit={async (values): Promise<{ [FORM_ERROR]: string } | void> => {
           try {
             const user = await loginMutation(values);
             props.onSuccess?.(user);
           } catch (error: any) {
             if (error instanceof AuthenticationError) {
               return { [FORM_ERROR]: 'Sorry, those credentials are invalid' };
-            } else {
-              return {
-                [FORM_ERROR]:
-                  'Sorry, we had an unexpected error. Please try again. - ' +
-                  error.toString(),
-              };
             }
+            return {
+              [FORM_ERROR]: `Sorry, we had an unexpected error. Please try again. - ${error.toString()}`,
+            };
           }
         }}
       >

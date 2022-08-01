@@ -3,7 +3,7 @@ import {
   Html,
   DocumentHead,
   Main,
-  BlitzScript /*DocumentContext*/,
+  BlitzScript /* DocumentContext */,
 } from 'blitz';
 
 class MyDocument extends Document {
@@ -13,7 +13,7 @@ class MyDocument extends Document {
   //   return {...initialProps}
   // }
 
-  render() {
+  render(): JSX.Element {
     return (
       <Html lang="en">
         <DocumentHead />

@@ -1,9 +1,10 @@
 import { BlitzPage, useMutation } from 'blitz';
-import Layout from 'app/core/layouts/Layout';
+import DefaultLayout from 'app/core/layouts/Default';
 import { LabeledTextField } from 'app/core/components/LabeledTextField';
 import { Form, FORM_ERROR } from 'app/core/components/Form';
 import { ForgotPassword } from 'app/auth/validations';
 import forgotPassword from 'app/auth/mutations/forgotPassword';
+import React from 'react';
 
 const ForgotPasswordPage: BlitzPage = () => {
   const [forgotPasswordMutation, { isSuccess }] = useMutation(forgotPassword);
@@ -25,7 +26,9 @@ const ForgotPasswordPage: BlitzPage = () => {
           submitText="Send Reset Password Instructions"
           schema={ForgotPassword}
           initialValues={{ email: '' }}
-          onSubmit={async values => {
+          onSubmit={async (
+            values,
+          ): Promise<{ [FORM_ERROR]: string } | void> => {
             try {
               await forgotPasswordMutation(values);
             } catch (error: any) {
@@ -44,8 +47,8 @@ const ForgotPasswordPage: BlitzPage = () => {
 };
 
 ForgotPasswordPage.redirectAuthenticatedTo = '/';
-ForgotPasswordPage.getLayout = page => (
-  <Layout title="Forgot Your Password?">{page}</Layout>
+ForgotPasswordPage.getLayout = (page): React.ReactElement => (
+  <DefaultLayout title="Forgot Your Password?">{page}</DefaultLayout>
 );
 
 export default ForgotPasswordPage;

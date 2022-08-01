@@ -1,7 +1,7 @@
-import { Suspense } from 'react';
+import React, { Suspense } from 'react';
 import { Image, Link, BlitzPage, useMutation, Routes } from 'blitz';
-import Layout from 'app/core/layouts/Layout';
-import { useCurrentUser } from 'app/core/hooks/useCurrentUser';
+import DefaultLayout from 'app/core/layouts/Default';
+import useCurrentUser from 'app/core/hooks/useCurrentUser';
 import logout from 'app/auth/mutations/logout';
 import logo from 'public/logo.png';
 
@@ -10,7 +10,7 @@ import logo from 'public/logo.png';
  * You can delete everything in here and start from scratch if you like.
  */
 
-const UserInfo = () => {
+const UserInfo: React.FC = () => {
   const currentUser = useCurrentUser();
   const [logoutMutation] = useMutation(logout);
 
@@ -19,7 +19,7 @@ const UserInfo = () => {
       <div className="flex gap-4">
         <button
           className="btn btn-error btn-sm"
-          onClick={async () => {
+          onClick={async (): Promise<void> => {
             await logoutMutation();
           }}
         >
@@ -32,22 +32,21 @@ const UserInfo = () => {
         </div>
       </div>
     );
-  } else {
-    return (
-      <>
-        <Link href={Routes.SignupPage()}>
-          <a className="button small">
-            <strong>Sign Up</strong>
-          </a>
-        </Link>
-        <Link href={Routes.LoginPage()}>
-          <a className="button small">
-            <strong>Login</strong>
-          </a>
-        </Link>
-      </>
-    );
   }
+  return (
+    <>
+      <Link href={Routes.SignupPage()}>
+        <a className="button small">
+          <strong>Sign Up</strong>
+        </a>
+      </Link>
+      <Link href={Routes.LoginPage()}>
+        <a className="button small">
+          <strong>Login</strong>
+        </a>
+      </Link>
+    </>
+  );
 };
 
 const Home: BlitzPage = () => {
@@ -94,7 +93,7 @@ const Home: BlitzPage = () => {
           <p>
             and go to{' '}
             <Link href="/projects">
-              <a>/projects</a>
+              <a href="/projects">/projects</a>
             </Link>
           </p>
         </div>
@@ -140,6 +139,8 @@ const Home: BlitzPage = () => {
 };
 
 Home.suppressFirstRenderFlicker = true;
-Home.getLayout = page => <Layout title="Home">{page}</Layout>;
+Home.getLayout = (page): JSX.Element => (
+  <DefaultLayout title="Home">{page}</DefaultLayout>
+);
 
 export default Home;

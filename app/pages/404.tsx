@@ -1,9 +1,10 @@
 import { Head, ErrorComponent } from 'blitz';
+import React from 'react';
 
 // ------------------------------------------------------
 // This page is rendered if a route match is not found
 // ------------------------------------------------------
-export default function Page404() {
+const Page404: React.FC = () => {
   const statusCode = 404;
   const title = 'This page could not be found';
   return (
@@ -16,4 +17,6 @@ export default function Page404() {
       <ErrorComponent statusCode={statusCode} title={title} />
     </>
   );
-}
+};
+
+export default Page404;

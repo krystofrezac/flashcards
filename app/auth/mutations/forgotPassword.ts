@@ -1,6 +1,6 @@
 import { resolver, generateToken, hash256 } from 'blitz';
 import db from 'db';
-import { forgotPasswordMailer } from 'mailers/forgotPasswordMailer';
+import forgotPasswordMailer from 'mailers/forgotPasswordMailer';
 import { ForgotPassword } from '../validations';
 
 const RESET_PASSWORD_TOKEN_EXPIRATION_IN_HOURS = 4;
@@ -41,10 +41,11 @@ export default resolver.pipe(
       await forgotPasswordMailer({ to: user.email, token }).send();
     } else {
       // 7. If no user found wait the same time so attackers can't tell the difference
-      await new Promise(resolve => setTimeout(resolve, 750));
+      await new Promise(resolve => {
+        setTimeout(resolve, 750);
+      });
     }
 
     // 8. Return the same result whether a password reset email was sent or not
-    return;
   },
 );

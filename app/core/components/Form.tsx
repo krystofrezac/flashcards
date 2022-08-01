@@ -1,4 +1,4 @@
-import { useState, ReactNode, PropsWithoutRef } from 'react';
+import React, { useState, ReactNode, PropsWithoutRef } from 'react';
 import { FormProvider, useForm, UseFormProps } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -21,14 +21,14 @@ interface OnSubmitResult {
 
 export const FORM_ERROR = 'FORM_ERROR';
 
-export function Form<S extends z.ZodType<any, any>>({
+export const Form = <S extends z.ZodType<any, any>>({
   children,
   submitText,
   schema,
   initialValues,
   onSubmit,
   ...props
-}: FormProps<S>) {
+}: FormProps<S>): React.ReactElement => {
   const ctx = useForm<z.infer<S>>({
     mode: 'onBlur',
     resolver: schema ? zodResolver(schema) : undefined,
@@ -41,7 +41,7 @@ export function Form<S extends z.ZodType<any, any>>({
       <form
         onSubmit={ctx.handleSubmit(async values => {
           const result = (await onSubmit(values)) || {};
-          for (const [key, value] of Object.entries(result)) {
+          Object.entries(result).forEach(([key, value]) => {
             if (key === FORM_ERROR) {
               setFormError(value);
             } else {
@@ -50,7 +50,7 @@ export function Form<S extends z.ZodType<any, any>>({
                 message: value,
               });
             }
-          }
+          });
         })}
         className="form"
         {...props}
@@ -78,6 +78,6 @@ export function Form<S extends z.ZodType<any, any>>({
       </form>
     </FormProvider>
   );
-}
+};
 
 export default Form;

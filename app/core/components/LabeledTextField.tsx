@@ -16,7 +16,7 @@ export interface LabeledTextFieldProps
 export const LabeledTextField = forwardRef<
   HTMLInputElement,
   LabeledTextFieldProps
->(({ label, outerProps, labelProps, name, ...props }, ref) => {
+>(({ label, outerProps, labelProps, name, ...props }, _ref) => {
   const {
     register,
     formState: { isSubmitting, errors },

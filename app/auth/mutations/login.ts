@@ -1,12 +1,12 @@
 import { resolver, SecurePassword, AuthenticationError } from 'blitz';
-import db from 'db';
-import { Login } from '../validations';
+import db, { User } from 'db';
 import { Role } from 'types';
+import { Login } from '../validations';
 
 export const authenticateUser = async (
   rawEmail: string,
   rawPassword: string,
-) => {
+): Promise<Omit<User, 'hashedPassword'>> => {
   const { email, password } = Login.parse({
     email: rawEmail,
     password: rawPassword,

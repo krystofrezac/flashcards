@@ -3,12 +3,13 @@ import { LabeledTextField } from 'app/core/components/LabeledTextField';
 import { Form, FORM_ERROR } from 'app/core/components/Form';
 import signup from 'app/auth/mutations/signup';
 import { Signup } from 'app/auth/validations';
+import React from 'react';
 
 type SignupFormProps = {
   onSuccess?: () => void;
 };
 
-export const SignupForm = (props: SignupFormProps) => {
+export const SignupForm: React.FC<SignupFormProps> = props => {
   const [signupMutation] = useMutation(signup);
 
   return (
@@ -19,7 +20,7 @@ export const SignupForm = (props: SignupFormProps) => {
         submitText="Create Account"
         schema={Signup}
         initialValues={{ email: '', password: '' }}
-        onSubmit={async values => {
+        onSubmit={async (values): Promise<Record<string, string> | void> => {
           try {
             await signupMutation(values);
             props.onSuccess?.();
@@ -30,9 +31,8 @@ export const SignupForm = (props: SignupFormProps) => {
             ) {
               // This error comes from Prisma
               return { email: 'This email is already being used' };
-            } else {
-              return { [FORM_ERROR]: error.toString() };
             }
+            return { [FORM_ERROR]: error.toString() };
           }
         }}
       >

@@ -5,6 +5,7 @@ import login from './login';
 
 export class ResetPasswordError extends Error {
   name = 'ResetPasswordError';
+
   message = 'Reset password link is invalid or it has expired.';
 }
 

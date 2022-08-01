@@ -1,7 +1,9 @@
 import { useQuery } from 'blitz';
-import getCurrentUser from 'app/users/queries/getCurrentUser';
+import getCurrentUser, { CurrentUser } from 'app/users/queries/getCurrentUser';
 
-export const useCurrentUser = () => {
+const useCurrentUser = (): CurrentUser | null => {
   const [user] = useQuery(getCurrentUser, null);
   return user;
 };
+
+export default useCurrentUser;
