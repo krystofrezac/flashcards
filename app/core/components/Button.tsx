@@ -37,7 +37,8 @@ const Button: React.FC<ButtonProps> = props => {
   const simple = props.simple === true;
 
   const classes = [
-    !simple && 'btn relative',
+    'relative',
+    !simple && 'btn',
     props.className,
     !simple && getButtonSizeClass(props.size),
     !simple && getButtonVariantClass(props.variant),
