@@ -21,6 +21,7 @@ module.exports = {
       rules: {
         'no-use-before-define': 'off',
         'consistent-return': 'off',
+        'newline-before-return': 'error',
 
         'jsx-a11y/anchor-is-valid': 'off',
         'jsx-a11y/label-has-associated-control': 'off', // false positive

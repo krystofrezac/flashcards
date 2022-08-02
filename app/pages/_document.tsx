@@ -15,7 +15,7 @@ class MyDocument extends Document {
 
   render(): JSX.Element {
     return (
-      <Html lang="en">
+      <Html lang="en" className="bg-base-200">
         <DocumentHead />
         <body>
           <Main />
