@@ -1,5 +1,6 @@
 import React from 'react';
 import { ButtonProps, ButtonSize, ButtonVariant } from './Button.types';
+import Spinner from './Spinner';
 
 const getButtonVariantClass = (variant?: ButtonVariant): string => {
   if (!variant) return '';
@@ -36,7 +37,7 @@ const Button: React.FC<ButtonProps> = props => {
   const simple = props.simple === true;
 
   const classes = [
-    !simple && 'btn',
+    !simple && 'btn relative',
     props.className,
     !simple && getButtonSizeClass(props.size),
     !simple && getButtonVariantClass(props.variant),
@@ -47,7 +48,19 @@ const Button: React.FC<ButtonProps> = props => {
   return React.createElement(
     props.element ?? 'button',
     { className: classes, onClick: props.onClick },
-    props.children,
+    <>
+      <div
+        className={`absolute w-full h-full bg-gray-900 rounded-lg bg-opacity-30 transition-opacity ${
+          !props.loading && 'opacity-0'
+        }`}
+      />
+      <Spinner
+        className={`absolute ml-auto mr-auto mt-auto mb-auto transition-opacity ${
+          props.loading ? 'opacity-100' : 'opacity-0'
+        }`}
+      />
+      {props.children}
+    </>,
   );
 };
 

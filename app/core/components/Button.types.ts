@@ -22,6 +22,7 @@ export interface ButtonProps {
   size?: ButtonSize;
   /** If btn classes should not be applied */
   simple?: boolean;
+  loading?: boolean;
 
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
