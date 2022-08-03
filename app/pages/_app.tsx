@@ -27,6 +27,7 @@ const RootErrorFallback: React.FC<ErrorFallbackProps> = ({
       />
     );
   }
+
   return (
     <ErrorComponent
       statusCode={error.statusCode || 400}

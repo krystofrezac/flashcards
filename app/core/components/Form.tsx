@@ -3,27 +3,29 @@ import { FormProvider, useForm, UseFormProps } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
+interface OnSubmitResult {
+  FORM_ERROR?: string;
+  [prop: string]: any;
+}
+
+export type SubmitHandler<S extends z.ZodType<any, any>> = (
+  values: z.infer<S>,
+) => Promise<void | OnSubmitResult>;
+
 export interface FormProps<S extends z.ZodType<any, any>>
   extends Omit<PropsWithoutRef<JSX.IntrinsicElements['form']>, 'onSubmit'> {
   /** All your form fields */
   children?: ReactNode;
   /** Text to display in the submit button */
-  submitText?: string;
   schema?: S;
-  onSubmit: (values: z.infer<S>) => Promise<void | OnSubmitResult>;
+  onSubmit: SubmitHandler<S>;
   initialValues?: UseFormProps<z.infer<S>>['defaultValues'];
-}
-
-interface OnSubmitResult {
-  FORM_ERROR?: string;
-  [prop: string]: any;
 }
 
 export const FORM_ERROR = 'FORM_ERROR';
 
 export const Form = <S extends z.ZodType<any, any>>({
   children,
-  submitText,
   schema,
   initialValues,
   onSubmit,
@@ -52,7 +54,6 @@ export const Form = <S extends z.ZodType<any, any>>({
             }
           });
         })}
-        className="form"
         {...props}
       >
         {/* Form fields supplied as children are rendered here */}
@@ -63,18 +64,6 @@ export const Form = <S extends z.ZodType<any, any>>({
             {formError}
           </div>
         )}
-
-        {submitText && (
-          <button type="submit" disabled={ctx.formState.isSubmitting}>
-            {submitText}
-          </button>
-        )}
-
-        <style global jsx>{`
-          .form > * + * {
-            margin-top: 1rem;
-          }
-        `}</style>
       </form>
     </FormProvider>
   );

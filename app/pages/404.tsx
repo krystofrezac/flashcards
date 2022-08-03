@@ -7,6 +7,7 @@ import React from 'react';
 const Page404: React.FC = () => {
   const statusCode = 404;
   const title = 'This page could not be found';
+
   return (
     <>
       <Head>

@@ -26,6 +26,7 @@ export const authenticateUser = async (
   }
 
   const { hashedPassword, ...rest } = user;
+
   return rest;
 };
 

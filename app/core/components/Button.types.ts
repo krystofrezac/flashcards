@@ -17,6 +17,7 @@ export interface ButtonProps {
   children?: React.ReactNode;
   className?: string;
   element?: React.ElementType;
+  type?: 'submit' | 'reset' | 'button';
 
   variant?: ButtonVariant;
   size?: ButtonSize;

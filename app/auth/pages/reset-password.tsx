@@ -1,10 +1,11 @@
 import { BlitzPage, useRouterQuery, Link, useMutation, Routes } from 'blitz';
 import DefaultLayout from 'app/core/layouts/Default';
-import { LabeledTextField } from 'app/core/components/LabeledTextField';
 import { Form, FORM_ERROR } from 'app/core/components/Form';
 import { ResetPassword } from 'app/auth/validations';
 import resetPassword from 'app/auth/mutations/resetPassword';
 import React from 'react';
+import TextInput from 'app/core/components/TextInput';
+import Submit from 'app/core/components/Submit';
 
 const ResetPasswordPage: BlitzPage = () => {
   const query = useRouterQuery();
@@ -23,7 +24,6 @@ const ResetPasswordPage: BlitzPage = () => {
         </div>
       ) : (
         <Form
-          submitText="Reset Password"
           schema={ResetPassword}
           initialValues={{
             password: '',
@@ -41,6 +41,7 @@ const ResetPasswordPage: BlitzPage = () => {
                   [FORM_ERROR]: error.message,
                 };
               }
+
               return {
                 [FORM_ERROR]:
                   'Sorry, we had an unexpected error. Please try again.',
@@ -48,16 +49,9 @@ const ResetPasswordPage: BlitzPage = () => {
             }
           }}
         >
-          <LabeledTextField
-            name="password"
-            label="New Password"
-            type="password"
-          />
-          <LabeledTextField
-            name="passwordConfirmation"
-            label="Confirm New Password"
-            type="password"
-          />
+          <TextInput name="password" label="New Password" />
+          <TextInput name="passwordConfirmation" label="Confirm New Password" />
+          <Submit>Register</Submit>
         </Form>
       )}
     </div>

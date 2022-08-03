@@ -13,6 +13,7 @@ export default resolver.pipe(
     });
 
     await ctx.session.$create({ userId: user.id, role: user.role as Role });
+
     return user;
   },
 );

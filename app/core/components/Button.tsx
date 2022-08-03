@@ -33,7 +33,7 @@ const getButtonSizeClass = (size?: ButtonSize): string => {
   return sizes[size];
 };
 
-const Button: React.FC<ButtonProps> = props => {
+const Button: React.FC<ButtonProps> = React.forwardRef((props, ref) => {
   const simple = props.simple === true;
 
   const classes = [
@@ -48,7 +48,7 @@ const Button: React.FC<ButtonProps> = props => {
 
   return React.createElement(
     props.element ?? 'button',
-    { className: classes, onClick: props.onClick },
+    { className: classes, ref, type: props.type, onClick: props.onClick },
     <>
       <div
         className={`absolute w-full h-full bg-gray-900 rounded-lg bg-opacity-30 transition-opacity ${
@@ -63,6 +63,6 @@ const Button: React.FC<ButtonProps> = props => {
       {props.children}
     </>,
   );
-};
+});
 
 export default Button;

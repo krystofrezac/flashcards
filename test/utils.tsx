@@ -59,6 +59,7 @@ export const render = (
     // Add a default context wrapper if one isn't supplied from the test
     NewWrapper = (props: React.PropsWithChildren<{}>): JSX.Element => {
       const providerValue = useMemo(() => ({ ...mockRouter, ...router }), []);
+
       return (
         <BlitzProvider dehydratedState={dehydratedState}>
           <RouterContext.Provider value={providerValue}>
@@ -68,6 +69,7 @@ export const render = (
       );
     };
   }
+
   return defaultRender(ui, { wrapper: NewWrapper, ...options });
 };
 
@@ -91,6 +93,7 @@ export const renderHook = (
     // Add a default context wrapper if one isn't supplied from the test
     NewWrapper = (props: React.PropsWithChildren<{}>): JSX.Element => {
       const providerValue = useMemo(() => ({ ...mockRouter, ...router }), []);
+
       return (
         <BlitzProvider dehydratedState={dehydratedState}>
           <RouterContext.Provider value={providerValue}>
@@ -100,6 +103,7 @@ export const renderHook = (
       );
     };
   }
+
   return defaultRenderHook(hook, { wrapper: NewWrapper, ...options });
 };
 
